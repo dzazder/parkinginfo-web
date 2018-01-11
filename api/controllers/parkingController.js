@@ -1,4 +1,7 @@
 'use strict';
+var request = require("request");
+var mongoose = require('mongoose'),
+    Parking = mongoose.model('Parkings');
 
 exports.list_all_parkings = function (req, res) {
     //todo read from db
@@ -20,28 +23,39 @@ exports.list_all_parkings = function (req, res) {
 exports.update_all_parkings = function (req, res) {
     // todo authorization
 
-    var result = {
-        code: 1,
-        description: "success"
-    };
-
-    res.send(result);    //success
+    request.get("https://www.wroclaw.pl/open-data/api/action/datastore_search?resource_id=61aa2014-31d5-4d62-b296-2002391430e2", function(err, response, body){
+        if (err) {
+            console.log(err);
+            // todo save error to db
+            res.send(null);
+        } else {
+            var parkings = response.body.result.records;
+            for (var p in parkings) {
+                var park = new Parking(p);
+                park.save(function(error, parking) {
+                    if (error) {
+                        console.log(error);
+                    }
+                    else {
+                        console.log("Parking saved");
+                    }
+                })
+            }
+            res.send(response);    
+        }
+    });
 }
 
 exports.get_origin_data = function (req, res) {
-    var options = {
-        host: 'www.wroclaw.pl',
-        port: 80,
-        path: '/open-data/api/action/datastore_search?resource_id=61aa2014-31d5-4d62-b296-2002391430e2'
-      };
-      
-      http.get(options, function(resp){
-        resp.on('data', function(chunk){
-          res.send(chunk);
-        });
-      }).on("error", function(e){
-        console.log("Got error: " + e.message);
-      });
+    request.get("https://www.wroclaw.pl/open-data/api/action/datastore_search?resource_id=61aa2014-31d5-4d62-b296-2002391430e2", function(err, response, body){
+        if (err) {
+            console.log(err);
+            // todo save error to db
+            res.send(null);
+        } else {
+            res.send(response);    
+        }
+    });
 /*
     var data = {
         resource_id: '61aa2014-31d5-4d62-b296-2002391430e2', // the resource id

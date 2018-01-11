@@ -3,23 +3,34 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-
-var TaskSchema = new Schema({
-  name: {
-    type: String,
-    required: 'Kindly enter the name of the task'
+/*
+Liczba_Wolnych_Miejsc: "317",
+Liczba_Poj_Wjezdzajacych: "3",
+Nazwa: "Narodowe Forum Muzyki",
+Liczba_Poj_Wyjezdzajacych: "2",
+Czas_Rejestracji: "2018-01-11 17:23:24",
+_id: 1
+*/
+var ParkingSchema = new Schema({
+  _id: {
+    type: Number,
+    required: true
   },
-  Created_date: {
-    type: Date,
-    default: Date.now
+  Liczba_Wolnych_Miejsc: {
+    type: Number
   },
-  status: {
-    type: [{
-      type: String,
-      enum: ['pending', 'ongoing', 'completed']
-    }],
-    default: ['pending']
+  Liczba_Poj_Wjezdzajacych: {
+    type: Number
+  },
+  Liczba_Poj_Wyjezdzajacych: {
+    type: Number
+  },
+  Nazwa: {
+    type: String
+  },
+  Czas_Rejestracji: {
+      type: Date
   }
 });
 
-module.exports = mongoose.model('Tasks', TaskSchema);
+module.exports = mongoose.model('Parkings', ParkingSchema);
