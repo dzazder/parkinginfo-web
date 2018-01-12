@@ -29,19 +29,25 @@ exports.update_all_parkings = function (req, res) {
             // todo save error to db
             res.send(null);
         } else {
-            var parkings = response.body.result.records;
-            for (var p in parkings) {
-                var park = new Parking(p);
-                park.save(function(error, parking) {
-                    if (error) {
-                        console.log(error);
-                    }
-                    else {
-                        console.log("Parking saved");
-                    }
-                })
+            try {
+                var json = JSON.parse(response.body);
+                var parkings = json.result.records;
+                for (var i in parkings) {
+                    var park = new Parking(parkings[i]);
+                    park.save(function(error, parking) {
+                        if (error) {
+                            console.log(error);
+                        }
+                        else {
+                            console.log("Parking saved");
+                        }
+                    });
+                }
+                res.send("OK");    // todo better object
             }
-            res.send(response);    
+            catch (ex) {
+                res.send(ex);
+            }
         }
     });
 }
