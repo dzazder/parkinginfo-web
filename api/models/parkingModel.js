@@ -1,7 +1,7 @@
 'use strict';
 
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+//var mongoose = require('mongoose');
+//var Schema = mongoose.Schema;
 
 /*
 Liczba_Wolnych_Miejsc: "317",
@@ -33,4 +33,4 @@ var ParkingSchema = new Schema({
   }
 });
 
-module.exports = mongoose.model('Parkings', ParkingSchema);
+//module.exports = mongoose.model('Parkings', ParkingSchema);
